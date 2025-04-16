@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ESP32 Web Flasher - Nạp Firmware Đồng Hồ</title>
+  <script type="module" src="https://unpkg.com/esp-web-tools@10.0.0/dist/web/install-button.js?module"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      line-height: 1.6;
+      color: #333;
+    }
+
+    h1,
+    h2,
+    h3 {
+      color: #0066cc;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .section {
+      background: #f9f9f9;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .flash-section {
+      background: #e6f7ff;
+      border: 1px solid #91d5ff;
+    }
+
+    .connection-guide {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .connection-image {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .connection-image img {
+      max-width: 100%;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 15px 0;
+    }
+
+    table,
+    th,
+    td {
+      border: 1px solid #ddd;
+    }
+
+    th,
+    td {
+      padding: 12px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    .step {
+      display: flex;
+      margin-bottom: 15px;
+      align-items: flex-start;
+    }
+
+    .step-number {
+      background: #0066cc;
+      color: white;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 15px;
+      flex-shrink: 0;
+    }
+
+    .step-content {
+      flex: 1;
+    }
+
+    .note {
+      background: #fffbe6;
+      border-left: 4px solid #ffe58f;
+      padding: 10px 15px;
+      margin: 15px 0;
+    }
+
+    esp-web-install-button {
+      margin: 20px 0;
+    }
+
+    .success-message {
+      display: none;
+      background: #f6ffed;
+      border: 1px solid #b7eb8f;
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 20px;
+    }
+
+    .troubleshooting {
+      background: #fff7e6;
+      border-left: 4px solid #ffd591;
+      padding: 10px 15px;
+      margin: 15px 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Nạp Firmware Đồng Hồ vào ESP32-C3 Super Mini</h1>
+
+    <div class="section">
+      <h2>Sơ đồ kết nối ESP32-C3 với màn hình TFT</h2>
+      <div class="connection-guide">
+        <p>Hãy kết nối ESP32-C3 Super Mini với màn hình TFT theo sơ đồ sau:</p>
+
+        <table>
+          <tr>
+            <th>Chân ESP32-C3</th>
+            <th>Chân Màn hình TFT</th>
+          </tr>
+          <tr>
+            <td>GPIO 0</td>
+            <td>CS (Chip Select)</td>
+          </tr>
+          <tr>
+            <td>GPIO 1</td>
+            <td>DC (Data/Command)</td>
+          </tr>
+          <tr>
+            <td>GPIO 2</td>
+            <td>RST (Reset)</td>
+          </tr>
+          <tr>
+            <td>GPIO 3</td>
+            <td>MOSI (Master Out)</td>
+          </tr>
+          <tr>
+            <td>GPIO 4</td>
+            <td>SCLK (Clock)</td>
+          </tr>
+          <tr>
+            <td>GPIO 5</td>
+            <td>BLK (Backlight)</td>
+          </tr>
+          <tr>
+            <td>3.3V</td>
+            <td>VCC</td>
+          </tr>
+          <tr>
+            <td>GND</td>
+            <td>GND</td>
+          </tr>
+        </table>
+
+        <div class="connection-image">
+          <img src="/api/placeholder/600/400" alt="Sơ đồ kết nối ESP32-C3 với màn hình TFT" />
+          <p><em>Sơ đồ kết nối ESP32-C3 Super Mini với màn hình TFT</em></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section flash-section">
+      <h2>Các bước nạp firmware</h2>
+
+      <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h3>Kết nối ESP32-C3 với máy tính</h3>
+          <p>Sử dụng cáp USB kết nối ESP32-C3 Super Mini với máy tính của bạn.</p>
+          <div class="connection-image">
+            <img src="/api/placeholder/500/300" alt="Kết nối ESP32-C3 với máy tính" />
+            <p><em>Kết nối ESP32-C3 với máy tính qua cổng USB</em></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <h3>Nhấn nút "Install" bên dưới</h3>
+          <p>Khi bạn nhấn nút này, trình duyệt sẽ yêu cầu quyền truy cập vào thiết bị USB.</p>
+          <esp-web-install-button manifest="manifest.json"></esp-web-install-button>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <h3>Chọn thiết bị ESP32-C3 từ danh sách</h3>
+          <p>Khi hộp thoại xuất hiện, chọn cổng USB đang kết nối với ESP32-C3 của bạn.</p>
+          <div class="connection-image">
+            <img src="/api/placeholder/500/300" alt="Chọn thiết bị ESP32-C3" />
+            <p><em>Chọn thiết bị ESP32-C3 từ danh sách thiết bị USB</em></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">4</div>
+        <div class="step-content">
+          <h3>Đặt ESP32-C3 vào chế độ download</h3>
+          <p>Để đặt ESP32-C3 vào chế độ download:</p>
+          <ol>
+            <li>Nhấn và giữ nút BOOT</li>
+            <li>Nhấn nhanh nút RESET (trong khi vẫn giữ nút BOOT)</li>
+            <li>Thả nút BOOT ra</li>
+          </ol>
+          <div class="connection-image">
+            <img src="/api/placeholder/500/300" alt="ESP32-C3 Mode Download" />
+            <p><em>Các nút BOOT và RESET trên ESP32-C3 Super Mini</em></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">5</div>
+        <div class="step-content">
+          <h3>Chờ quá trình nạp hoàn tất</h3>
+          <p>Quá trình nạp firmware sẽ diễn ra tự động. Vui lòng không ngắt kết nối ESP32-C3 trong quá trình này.</p>
+          <div class="connection-image">
+            <img src="/api/placeholder/500/300" alt="Tiến trình nạp firmware" />
+            <p><em>Tiến trình nạp firmware</em></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">6</div>
+        <div class="step-content">
+          <h3>Kiểm tra màn hình đồng hồ</h3>
+          <p>Sau khi nạp thành công, ESP32-C3 sẽ tự động khởi động lại. Màn hình TFT sẽ hiển thị đồng hồ sau vài giây.
+          </p>
+          <div class="connection-image">
+            <img src="/api/placeholder/500/300" alt="Đồng hồ hiển thị trên màn hình TFT" />
+            <p><em>Đồng hồ hiển thị trên màn hình TFT sau khi nạp thành công</em></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="success-message" id="successMessage">
+        <h3>🎉 Nạp firmware thành công!</h3>
+        <p>ESP32-C3 đã được nạp firmware đồng hồ thành công. Màn hình TFT sẽ hiển thị đồng hồ sau vài giây.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const installButton = document.querySelector('esp-web-install-button');
+      const successMessage = document.getElementById('successMessage');
+
+      if (installButton) {
+        installButton.addEventListener('installation-success', function () {
+          successMessage.style.display = 'block';
+          setTimeout(() => {
+            window.scrollTo({
+              top: successMessage.offsetTop,
+              behavior: 'smooth'
+            });
+          }, 500);
+        });
+      }
+    });
+  </script>
+</body>
+
+</html>
